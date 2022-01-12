@@ -1,7 +1,7 @@
 # microSQL - Simple ever SQL DB
 
 ## Supported SQL Syntax:
-```
+```sql
 select cols, ... from table_name [where ...]
 insert into table_name (cols, ...) values (v, ...)
 delete from table_name [where ...]
