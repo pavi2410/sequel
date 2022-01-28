@@ -20,24 +20,23 @@ def main():
     load_from_db()
 
     while True:
-        qs = input(">")
+        match input(">").split():
+            case [".exit"]:
+                break
+            case [".help"]:
+                print_help()
+                break
+            case [".showdb"]:
+                console.print(db)
+            case [cmd, *rest]:
+                eval_cmd(cmd, *rest)
 
-        if not qs or qs == ".exit":
-            break
+    persist_to_db()
 
-        if qs == ".help":
-            print_help()
-            break
 
-        if qs == ".showdb":
-            print(db)
-            continue
-
-        cmd, *rest = qs.split()
-
-        printd("cmd =", cmd)
-
-        if cmd == "select":
+def eval_cmd(cmd: str, *rest):
+    match cmd:
+        case "select":
             cols, rest = ' '.join(rest).split(' from ')
 
             cols = parse_csv(cols)
@@ -60,7 +59,7 @@ def main():
                         print_table(data)
             else:
                 print_table(data)
-        elif cmd == "insert":
+        case "insert":
             _into, table_name, *rest = ' '.join(rest).split()
             printd("table =", table_name, rest)
 
@@ -72,7 +71,7 @@ def main():
             printd("data =", data)
 
             insert_row_into_table(table_name, data)
-        elif cmd == "delete":
+        case "delete":
             _from, table_name, *rest = ' '.join(rest).split()
             printd("table =", table_name)
             print(rest)
@@ -83,7 +82,7 @@ def main():
                 lhs, op, rhs = rest
                 delete_row_from_table(
                     table_name, op_map[op], lhs, parse_literal(rhs))
-        elif cmd == "create":
+        case "create":
             _table, table_name, *rest = ' '.join(rest).split()
             printd("table =", table_name)
 
@@ -91,13 +90,11 @@ def main():
             printd("cols =", cols)
 
             create_table(table_name, cols)
-        elif cmd == "drop":
+        case "drop":
             _table, table_name = ' '.join(rest).split()
             printd("table =", table_name)
 
             delete_table(table_name)
-
-        persist_to_db()
 
 
 def get_data_from_table(table_name: str, cols: list[str]):
@@ -162,7 +159,7 @@ def print_table(dataset):
 
 def printd(*args):
     if DEBUG:
-        console.print(*args, style="bold red")
+        console.print(*args, style="red")
 
 
 def print_help():
