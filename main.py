@@ -1,4 +1,5 @@
 import pickle
+import operator
 from typing import Any
 from rich.console import Console
 from rich.table import Table
@@ -9,11 +10,8 @@ DB_FILE = 'microsql.db'
 db = dict()
 console = Console()
 
-op_map = {'=': (lambda a, b: a == b),
-          '>': (lambda a, b: int(a) > int(b)),
-          '<': (lambda a, b: int(a) < int(b)),
-          '>=': (lambda a, b: int(a) >= int(b)),
-          '<=': (lambda a, b: int(a) <= int(b))}
+op_map = {'==': operator.eq, '!=': operator.ne, '>': operator.gt,
+          '<': operator.lt, '>=': operator.ge, '<=': operator.le}
 
 
 def main():
