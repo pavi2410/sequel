@@ -35,7 +35,10 @@ def main():
                 global DB_FILE
                 DB_FILE = filename
             case [cmd, *rest]:
-                eval_cmd(cmd, *rest)
+                try:
+                    eval_cmd(cmd, *rest)
+                except:
+                    console.print_exception()
 
     persist_to_db()
 
