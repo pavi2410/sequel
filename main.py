@@ -158,7 +158,7 @@ def parse_literal(literal):
         return str(literal)[1:-1]
 
 
-def print_table(dataset):
+def print_table(dataset: dict[str, Any]):
     vals = [d.values() for d in dataset]
 
     table = Table("", *dict.fromkeys(dataset[0]))
