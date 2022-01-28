@@ -95,21 +95,18 @@ def main():
         persist_to_db()
 
 
-def get_data_from_table(table_name, cols):
-    """
-    cols is a list of column names
-    """
+def get_data_from_table(table_name: str, cols: list[str]):
     return [{k: d[k] for k in cols} for d in db[table_name]]
 
 
-def insert_row_into_table(table_name, data):
+def insert_row_into_table(table_name: str, data):
     """
     data is a list of col and row_datum
     """
     db[table_name].append(data)
 
 
-def delete_row_from_table(table_name, f, lhs, rhs):
+def delete_row_from_table(table_name: str, f, lhs, rhs):
     d = 0
     for row in db[table_name]:
         if f(row[lhs], rhs):
@@ -118,14 +115,11 @@ def delete_row_from_table(table_name, f, lhs, rhs):
     print("Deleted %d rows" % d)
 
 
-def create_table(table_name, cols):
-    """
-    cols is a list of column names
-    """
+def create_table(table_name: str, cols: list[str]):
     db[table_name] = []
 
 
-def delete_table(table_name):
+def delete_table(table_name: str):
     del db[table_name]
 
 
