@@ -57,15 +57,17 @@ def eval_cmd(cmd: str, *rest):
             data = get_data_from_table(table_name, cols)
 
             if rest:
-                filter_cmd, *rest = rest
-                printd("filter =", filter_cmd)
+                clause, *rest = rest
+                printd("clause =", clause)
 
-                if filter_cmd == "where":
+                if clause == "where":
                     lhs, op, rhs = rest
-                    if lhs in cols:
-                        data = {e for e in data if op_map[op](
-                            e[lhs], parse_literal(rhs))}
-                        print_table(data)
+                    # TODO: check schema if lhs (col name) exists
+                    # and rhs is of correct type
+                    op_f = op_map[op]
+                    table = [e for e in data if op_f(
+                        e[lhs], parse_literal(rhs))]
+                    print_table(table)
             else:
                 print_table(data)
         case "insert":
@@ -84,10 +86,10 @@ def eval_cmd(cmd: str, *rest):
             _from, table_name, *rest = ' '.join(rest).split()
             printd("table =", table_name)
             print(rest)
-            filter_cmd, *rest = rest
-            printd("filter =", filter_cmd)
+            clause, *rest = rest
+            printd("filter =", clause)
 
-            if filter_cmd == "where":
+            if clause == "where":
                 lhs, op, rhs = rest
                 delete_row_from_table(
                     table_name, op_map[op], lhs, parse_literal(rhs))
