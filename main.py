@@ -4,6 +4,7 @@ from rich.console import Console
 from rich.table import Table
 
 DEBUG = True
+DB_FILE = 'microsql.db'
 
 db = dict()
 console = Console()
@@ -127,14 +128,14 @@ def delete_table(table_name: str):
 def load_from_db():
     global db
     try:
-        with open('microsql.db', 'rb') as db_file:
+        with open(DB_FILE, 'rb') as db_file:
             db = pickle.load(db_file)
     except FileNotFoundError:
         pass
 
 
 def persist_to_db():
-    with open('microsql.db', 'wb') as db_file:
+    with open(DB_FILE, 'wb') as db_file:
         pickle.dump(db, db_file)
 
 
