@@ -1,8 +1,11 @@
 import pickle
+from rich.console import Console
+from rich.table import Table
 
 DEBUG = True
 
 db = dict()
+console = Console()
 
 op_map = {'=': (lambda a, b: a == b),
           '>': (lambda a, b: int(a) > int(b)),
@@ -149,25 +152,18 @@ def parse_literal(literal):
 
 
 def print_table(dataset):
-    keys = []
-    vals = []
-    for data in dataset:
-        val = []
-        for k, v in data.items():
-            keys.append(k)
-            val.append(v)
-        vals.append(val)
+    vals = [d.values() for d in dataset]
 
-    header = '\t'.join(dict.fromkeys(keys))
-    print(' ', header)
-    print('-' * (len(str(header)) + 2))
+    table = Table("", *dict.fromkeys(dataset[0]))
     for i, v in enumerate(vals):
-        print(i+1, '\t'.join(map(str, v)))
+        table.add_row(str(i+1), *map(str, v))
+
+    console.print(table)
 
 
 def printd(*args):
     if DEBUG:
-        print(*args)
+        console.print(*args, style="bold red")
 
 
 def print_help():
