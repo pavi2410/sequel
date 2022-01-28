@@ -1,4 +1,5 @@
 import pickle
+from typing import Any
 from rich.console import Console
 from rich.table import Table
 
@@ -102,10 +103,7 @@ def get_data_from_table(table_name: str, cols: list[str]):
     return [{k: d[k] for k in cols} for d in db[table_name]]
 
 
-def insert_row_into_table(table_name: str, data):
-    """
-    data is a list of col and row_datum
-    """
+def insert_row_into_table(table_name: str, data: dict[str, Any]):
     db[table_name].append(data)
 
 
