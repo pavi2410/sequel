@@ -3,7 +3,7 @@ from typing import Any
 from rich.console import Console
 from rich.table import Table
 
-DEBUG = True
+DEBUG = False
 DB_FILE = 'microsql.db'
 
 db = dict()
@@ -28,6 +28,12 @@ def main():
                 break
             case [".showdb"]:
                 console.print(db)
+            case [".debug", ("on" | "off") as d]:
+                global DEBUG
+                DEBUG = (d == "on")
+            case [".db", filename]:
+                global DB_FILE
+                DB_FILE = filename
             case [cmd, *rest]:
                 eval_cmd(cmd, *rest)
 
